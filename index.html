@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>한국자활복지개발원 취업도전형 사업단 인턴처 DB</title>
+  <link rel="stylesheet" href="app.css">
+  <link rel="icon" href="logo.png" type="image/png">
+  <script src="kdissw-data.js"></script>
+  <script src="kdissw-sync.js"></script>
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="header-top-bar">
+    <div class="header-top-inner">
+      <div class="header-top-left">
+        <span>보건복지부 산하 공공기관 <strong>한국자활복지개발원 (KDISSW)</strong></span>
+        <span>|</span>
+        <span>취업도전형 사업단 맞춤형 일자리 포털</span>
+      </div>
+      <div class="header-top-right">
+        <span>담당자 문의: 방지현 대리 (02-3415-6959 / julia@kdissw.or.kr)</span>
+        <a href="admin.html" class="nav-btn-admin" style="padding: 2px 10px; font-size: 0.75rem; border-radius: 4px;">관리자 로그인</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Header -->
+  <header class="main-header">
+    <div class="header-container">
+      <div class="header-brand">
+        <img src="logo.png" alt="한국자활복지개발원 로고" class="header-logo-img" id="headerLogo">
+        <div class="brand-title-wrap">
+          <span class="brand-sub">자활 참여자 맞춤형 일자리 연계 시스템</span>
+          <h1 class="brand-title">한국자활복지개발원 취업도전형 사업단 인턴처 DB</h1>
+        </div>
+      </div>
+
+      <div class="header-nav">
+        <div class="live-sync-indicator" id="syncStatusBadge" title="구글 스프레드시트와 실시간 연동 중입니다.">
+          <span class="pulse-dot"></span>
+          <span id="syncStatusText">구글 시트 실시간 연동 (258건)</span>
+          <button type="button" onclick="refreshLiveData()" style="background:none;border:none;color:var(--primary-blue);cursor:pointer;font-weight:700;font-size:0.75rem;margin-left:4px;" title="지금 즉시 새로고침">↻</button>
+        </div>
+        <button class="nav-btn active" onclick="switchMainTab('search')">인턴처 검색</button>
+        <button class="nav-btn" onclick="switchMainTab('notice')">공지사항</button>
+        <button class="nav-btn" onclick="switchMainTab('qna')">자주 묻는 질문(Q&A)</button>
+        <a href="admin.html" class="nav-btn nav-btn-admin">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          관리자 모드
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="heroSection">
+    <div class="hero-inner">
+      <div class="hero-badge">자활 참여자의 안정적인 자립과 성장을 지원합니다</div>
+      <h2 class="hero-title">내 조건에 딱 맞는 <span>취업도전형 인턴처</span>를 찾아보세요</h2>
+      <p class="hero-desc">전국 15개 시도 광역자활센터에서 엄선한 258개 공식 인턴처 정보를 실시간으로 제공합니다. 지역, 직무, 근무조건을 검색하고 바로 매칭을 신청하세요.</p>
+      
+      <!-- Search Input Box -->
+      <div class="hero-search-box">
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="keywordInput" class="hero-search-input" placeholder="기업명, 직무내용, 지역, 자활센터, 우대자격증 등을 검색하세요..." onkeyup="if(event.key==='Enter') executeSearch()">
+        </div>
+        <button type="button" class="hero-search-btn" onclick="executeSearch()">검색하기</button>
+      </div>
+
+      <!-- Quick Search Keywords -->
+      <div class="quick-tags">
+        <span class="quick-tag-label">추천 검색어:</span>
+        <button type="button" class="quick-tag" onclick="setQuickSearch('식음료')">#식음료/조리</button>
+        <button type="button" class="quick-tag" onclick="setQuickSearch('사무행정')">#사무행정</button>
+        <button type="button" class="quick-tag" onclick="setQuickSearch('카페')">#카페/바리스타</button>
+        <button type="button" class="quick-tag" onclick="setQuickSearch('택배')">#배송/택배</button>
+        <button type="button" class="quick-tag" onclick="setQuickSearch('제과제빵')">#제과제빵</button>
+        <button type="button" class="quick-tag" onclick="setQuickSearch('자활기업')">#자활기업</button>
+        <button type="button" class="quick-tag" onclick="setQuickSearch('드론')">#드론/미디어</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Container -->
+  <main class="main-content">
+
+    <!-- SEARCH VIEW TAB -->
+    <div id="tabSearchView">
+      
+      <!-- Comprehensive Filter Panel -->
+      <section class="filter-panel">
+        <div class="filter-panel-header">
+          <h3 class="filter-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+            상세 필터 검색 (다중 조건 결합)
+          </h3>
+          <button type="button" class="filter-reset-btn" onclick="resetFilters()">↺ 필터 초기화</button>
+        </div>
+
+        <!-- 1. Region Filter -->
+        <div class="filter-row">
+          <div class="filter-label">📍 권역(광역)</div>
+          <div class="filter-options" id="regionFilterOptions">
+            <button class="filter-chip active" data-filter="region" data-val="all" onclick="toggleFilterChip(this)">전체 (전국)</button>
+            <button class="filter-chip" data-filter="region" data-val="서울" onclick="toggleFilterChip(this)">서울</button>
+            <button class="filter-chip" data-filter="region" data-val="경기" onclick="toggleFilterChip(this)">경기</button>
+            <button class="filter-chip" data-filter="region" data-val="강원" onclick="toggleFilterChip(this)">강원</button>
+            <button class="filter-chip" data-filter="region" data-val="대구" onclick="toggleFilterChip(this)">대구</button>
+            <button class="filter-chip" data-filter="region" data-val="경북" onclick="toggleFilterChip(this)">경북</button>
+            <button class="filter-chip" data-filter="region" data-val="부산" onclick="toggleFilterChip(this)">부산</button>
+            <button class="filter-chip" data-filter="region" data-val="인천" onclick="toggleFilterChip(this)">인천</button>
+            <button class="filter-chip" data-filter="region" data-val="광주" onclick="toggleFilterChip(this)">광주</button>
+            <button class="filter-chip" data-filter="region" data-val="대전" onclick="toggleFilterChip(this)">대전</button>
+            <button class="filter-chip" data-filter="region" data-val="울산" onclick="toggleFilterChip(this)">울산</button>
+            <button class="filter-chip" data-filter="region" data-val="경남" onclick="toggleFilterChip(this)">경남</button>
+            <button class="filter-chip" data-filter="region" data-val="전북" onclick="toggleFilterChip(this)">전북</button>
+            <button class="filter-chip" data-filter="region" data-val="전남" onclick="toggleFilterChip(this)">전남</button>
+            <button class="filter-chip" data-filter="region" data-val="충남" onclick="toggleFilterChip(this)">충남</button>
+            <button class="filter-chip" data-filter="region" data-val="충북" onclick="toggleFilterChip(this)">충북</button>
+          </div>
+        </div>
+
+        <!-- 2. Intern Type Filter -->
+        <div class="filter-row">
+          <div class="filter-label">🎯 사업단 구분</div>
+          <div class="filter-options" id="typeFilterOptions">
+            <button class="filter-chip active" data-filter="type" data-val="all" onclick="toggleFilterChip(this)">전체</button>
+            <button class="filter-chip filter-chip-orange" data-filter="type" data-val="직접전환형" onclick="toggleFilterChip(this)">직접전환형 (6개월~최대 3년)</button>
+            <button class="filter-chip filter-chip-orange" data-filter="type" data-val="체험형" onclick="toggleFilterChip(this)">체험형 (2~6개월)</button>
+          </div>
+        </div>
+
+        <!-- 3. Company Type Filter -->
+        <div class="filter-row">
+          <div class="filter-label">🏢 기업 구분</div>
+          <div class="filter-options" id="companyFilterOptions">
+            <button class="filter-chip active" data-filter="companyType" data-val="all" onclick="toggleFilterChip(this)">전체</button>
+            <button class="filter-chip" data-filter="companyType" data-val="법인사업체" onclick="toggleFilterChip(this)">법인사업체</button>
+            <button class="filter-chip" data-filter="companyType" data-val="자활기업" onclick="toggleFilterChip(this)">자활기업</button>
+            <button class="filter-chip" data-filter="companyType" data-val="개인사업체" onclick="toggleFilterChip(this)">개인사업체</button>
+            <button class="filter-chip" data-filter="companyType" data-val="공기업" onclick="toggleFilterChip(this)">공기업/공공기관/기타</button>
+          </div>
+        </div>
+
+        <!-- 4. Matching & Status Filter -->
+        <div class="filter-row">
+          <div class="filter-label">⚡ 모집 상태</div>
+          <div class="filter-options" id="statusFilterOptions">
+            <button class="filter-chip active" data-filter="status" data-val="all" onclick="toggleFilterChip(this)">전체</button>
+            <button class="filter-chip" data-filter="status" data-val="모집중" onclick="toggleFilterChip(this)">🟢 모집중 (신청 가능)</button>
+            <button class="filter-chip" data-filter="status" data-val="마감" onclick="toggleFilterChip(this)">⚪ 마감</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Controls Bar -->
+      <section class="controls-bar">
+        <div class="results-count">
+          검색된 인턴처: <strong id="totalCountDisplay">258</strong>개 / 전체 <span id="dbTotalCountDisplay">258</span>개
+        </div>
+
+        <div class="controls-right">
+          <select id="sortSelect" class="sort-select" onchange="renderInternships()">
+            <option value="id_asc">등록 번호순</option>
+            <option value="id_desc">최신 등록순</option>
+            <option value="capacity_desc">모집인원 많은 순</option>
+            <option value="region">지역(권역)순</option>
+            <option value="company">기업명 가나다순</option>
+          </select>
+
+          <div class="view-toggle">
+            <button class="view-btn active" id="btnViewCard" onclick="setViewMode('card')">카드형</button>
+            <button class="view-btn" id="btnViewTable" onclick="setViewMode('table')">테이블형</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Card Grid Container -->
+      <section id="cardGridContainer" class="internship-grid"></section>
+
+      <!-- Table Container -->
+      <section id="tableContainer" class="table-wrap" style="display: none;">
+        <table class="intern-table">
+          <thead>
+            <tr>
+              <th>번호</th>
+              <th>상태</th>
+              <th>구분</th>
+              <th>권역</th>
+              <th>기업명</th>
+              <th>업종 / 직무</th>
+              <th>근무지 주소</th>
+              <th>모집규모</th>
+              <th>매칭현황</th>
+              <th>관리</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </section>
+
+      <!-- Empty State -->
+      <div id="emptyState" style="display:none; text-align:center; padding: 60px 20px; background:#fff; border-radius:12px; margin-top:20px; border:1px solid #e2e8f0;">
+        <div style="font-size:3rem; margin-bottom:12px;">🔍</div>
+        <h3 style="font-size:1.25rem; font-weight:800; color:#1e293b; margin-bottom:8px;">일치하는 인턴처가 없습니다</h3>
+        <p style="color:#64748b; font-size:0.9375rem; margin-bottom:18px;">선택하신 조건이나 검색어를 변경하여 다시 검색해 보세요.</p>
+        <button type="button" class="filter-reset-btn" onclick="resetFilters()">전체 조건 초기화</button>
+      </div>
+
+    </div>
+
+    <!-- NOTICE VIEW TAB -->
+    <div id="tabNoticeView" style="display: none;">
+      <section style="background:#fff; border-radius:16px; padding:32px; border:1px solid var(--gray-200); box-shadow:var(--shadow-sm);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid var(--gray-200);">
+          <div>
+            <h2 style="font-size:1.5rem; font-weight:800; color:var(--gray-900);">취업도전형 사업단 공지사항</h2>
+            <p style="font-size:0.875rem; color:var(--gray-500); margin-top:4px;">한국자활복지개발원 및 각 권역별 주요 공지 및 운영 안내입니다.</p>
+          </div>
+          <span style="font-size:0.8125rem; background:var(--gray-100); padding:6px 14px; border-radius:9999px; color:var(--gray-600); font-weight:600;">
+            ※ 공지사항 작성·수정 권한은 관리자에게만 부여되어 있습니다.
+          </span>
+        </div>
+        <div id="noticeListContainer"></div>
+      </section>
+    </div>
+
+    <!-- QNA VIEW TAB -->
+    <div id="tabQnaView" style="display: none;">
+      <section style="background:#fff; border-radius:16px; padding:32px; border:1px solid var(--gray-200); box-shadow:var(--shadow-sm);">
+        <div style="margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid var(--gray-200);">
+          <h2 style="font-size:1.5rem; font-weight:800; color:var(--gray-900);">자주 묻는 질문 (Q&A)</h2>
+          <p style="font-size:0.875rem; color:var(--gray-500); margin-top:4px;">취업도전형 사업단 인턴처 신청 및 근무 관련 궁금증을 확인하세요.</p>
+        </div>
+        <div id="qnaListContainer"></div>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- Internship Detail Modal -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="badge badge-region" id="modalRegionBadge">권역</span>
+          <span class="badge badge-status-open" id="modalStatusBadge">모집중</span>
+          <h3 class="modal-title" id="modalTitle">기업명</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('detailModal')">&times;</button>
+      </div>
+
+      <div class="modal-body" id="modalDetailContent">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-action btn-pdf" id="modalPdfBtn" onclick="exportCurrentDetailPdf()" style="flex:0 0 auto; padding: 10px 18px;">
+          📄 PDF 반출 다운로드
+        </button>
+        <button type="button" class="btn-action btn-match" id="modalMatchBtn" onclick="openMatchingModalFromDetail()" style="flex:0 0 auto; padding: 10px 22px;">
+          🤝 매칭 신청하기
+        </button>
+        <button type="button" class="btn-action btn-detail" onclick="closeModal('detailModal')" style="flex:0 0 auto; padding: 10px 18px;">
+          닫기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Matching Application Modal -->
+  <div class="modal-overlay" id="matchingModal">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="badge badge-type-direct">매칭 등록</span>
+          <h3 class="modal-title" id="matchingModalTitle">인턴처 참여자 매칭</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('matchingModal')">&times;</button>
+      </div>
+
+      <form id="matchingForm" onsubmit="handleMatchingSubmit(event)">
+        <div class="modal-body">
+          <div style="background:var(--primary-blue-light); border-radius:8px; padding:12px 16px; margin-bottom:20px; font-size:0.875rem; color:var(--primary-blue-dark); line-height:1.5;">
+            <strong>인턴처:</strong> <span id="matchingTargetCompany">-</span><br>
+            <strong>권역/모집규모:</strong> <span id="matchingTargetMeta">-</span><br>
+            <span style="font-size:0.8125rem; color:#4a5568;">※ 기입하신 매칭 정보는 관리자 페이지 및 실시간 DB에 즉시 연동 반영됩니다.</span>
+          </div>
+
+          <input type="hidden" id="matchTargetId">
+
+          <div class="form-group">
+            <label class="form-label">참여자 성명 <span class="required">*</span></label>
+            <input type="text" id="matchParticipantName" class="form-input" placeholder="예: 홍길동" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">소속 지역자활센터 (기관명) <span class="required">*</span></label>
+            <input type="text" id="matchParticipantOrg" class="form-input" placeholder="예: 서울노원지역자활센터" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">참여자 연락처</label>
+            <input type="tel" id="matchParticipantPhone" class="form-input" placeholder="예: 010-1234-5678">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">신청 메모 / 특기사항</label>
+            <textarea id="matchParticipantMemo" class="form-textarea" placeholder="보유 자격증, 희망 근무일자, 기타 상담 메모 등"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-action btn-detail" onclick="closeModal('matchingModal')" style="flex:0 0 auto; padding: 10px 18px;">
+            취소
+          </button>
+          <button type="submit" class="btn-action btn-match" style="flex:0 0 auto; padding: 10px 24px;">
+            매칭 신청 완료
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Notice Detail Modal -->
+  <div class="modal-overlay" id="noticeDetailModal">
+    <div class="modal-card" style="max-width: 680px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="badge badge-type-direct" id="noticeModalCategory">공지</span>
+          <h3 class="modal-title" id="noticeModalTitle">공지사항 제목</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('noticeDetailModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex; gap:16px; font-size:0.8125rem; color:var(--gray-500); margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--gray-200);">
+          <span>작성자: <strong id="noticeModalAuthor">한국자활복지개발원</strong></span>
+          <span>등록일: <span id="noticeModalDate">2026-10-10</span></span>
+          <span>조회수: <span id="noticeModalViews">0</span></span>
+        </div>
+        <div id="noticeModalContent" style="font-size:0.9375rem; color:var(--gray-800); line-height:1.7; white-space:pre-wrap;"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-action btn-detail" onclick="closeModal('noticeDetailModal')" style="flex:0 0 auto; padding: 10px 20px;">
+          확인
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div style="max-width: 600px;">
+          <h4 class="footer-info-title">한국자활복지개발원 (KDISSW)</h4>
+          <p style="line-height:1.7; margin-bottom:12px;">
+            한국자활복지개발원은 국민기초생활보장법 제15조의2에 의해 설립된 보건복지부 산하 공공기관으로서,<br>
+            저소득 취약계층의 자립·자활을 위한 일자리 창출과 복지 지원 사업을 총괄합니다.
+          </p>
+          <p style="color:#6b7280; font-size:0.8125rem;">
+            주소: 서울특별시 서대문구 통일로 135 한국자활복지개발원 | 대표전화: 02-3415-6900
+          </p>
+        </div>
+
+        <div class="footer-contact-box">
+          <div class="footer-contact-title">📞 취업도전형 인턴처 DB 전담 문의</div>
+          <p style="font-size:0.875rem; color:#e5e7eb; margin-bottom:4px;">
+            <strong>담당자:</strong> 자활정책개발부 방지현 대리
+          </p>
+          <p style="font-size:0.875rem; color:#e5e7eb; margin-bottom:4px;">
+            <strong>직통전화:</strong> 02-3415-6959
+          </p>
+          <p style="font-size:0.875rem; color:#e5e7eb;">
+            <strong>이메일:</strong> julia@kdissw.or.kr
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 Korea Development Institute for Self-Sufficiency and Welfare. All rights reserved.</div>
+        <div style="display:flex; gap:16px;">
+          <a href="https://www.kdissw.or.kr" target="_blank" rel="noopener" style="color:#9ca3af;">한국자활복지개발원 공식 홈페이지 ↗</a>
+          <a href="admin.html" style="color:var(--primary-orange); font-weight:700;">관리자 페이지 바로가기 ↗</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script Logic -->
+  <script>
+    let currentFilteredData = [];
+    let currentDetailItem = null;
+    let viewMode = 'card'; // 'card' or 'table'
+
+    const activeFilters = {
+      keyword: '',
+      region: 'all',
+      type: 'all',
+      companyType: 'all',
+      status: 'all'
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Set embedded base64 logo if image file fails
+      const logoEl = document.getElementById('headerLogo');
+      if (window.KDISSW_CONFIG && window.KDISSW_CONFIG.logoBase64) {
+        logoEl.onerror = () => {
+          logoEl.src = window.KDISSW_CONFIG.logoBase64;
+        };
+      }
+
+      // Initialize dataset
+      initApp();
+
+      // Listen for background sync updates
+      if (window.KDISSW_SYNC) {
+        window.KDISSW_SYNC.on('dataUpdated', () => {
+          renderInternships();
+          renderNotices();
+          renderQna();
+          updateSyncBadge('success');
+        });
+
+        window.KDISSW_SYNC.on('syncStatusChanged', (statusInfo) => {
+          updateSyncBadge(statusInfo.status, statusInfo.time);
+        });
+
+        // Trigger live spreadsheet fetch
+        window.KDISSW_SYNC.fetchLiveSpreadsheet();
+      }
+    });
+
+    function initApp() {
+      renderInternships();
+      renderNotices();
+      renderQna();
+    }
+
+    function updateSyncBadge(status, time) {
+      const badge = document.getElementById('syncStatusBadge');
+      const text = document.getElementById('syncStatusText');
+      const allCount = (window.KDISSW_SYNC ? window.KDISSW_SYNC.getInternships().length : 258);
+      
+      document.getElementById('dbTotalCountDisplay').innerText = allCount;
+
+      if (status === 'syncing') {
+        text.innerText = '구글 시트 동기화 중...';
+      } else if (status === 'error') {
+        text.innerText = `구글 시트 연동 (${allCount}건)`;
+      } else {
+        const timeStr = time ? new Date(time).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit', second:'2-digit' }) : '실시간';
+        text.innerText = `구글 시트 연동 (${allCount}건 · ${timeStr})`;
+      }
+    }
+
+    function refreshLiveData() {
+      showToast('구글 스프레드시트 최신 데이터를 조회하는 중입니다...', 'info');
+      if (window.KDISSW_SYNC) {
+        window.KDISSW_SYNC.fetchLiveSpreadsheet().then(res => {
+          if (res && res.success) {
+            showToast(`구글 시트 연동 완료! 총 ${res.count}건의 인턴처가 갱신되었습니다.`, 'success');
+            renderInternships();
+          } else {
+            showToast('실시간 조회 완료 (현재 캐시 데이터 적용 중)', 'success');
+          }
+        });
+      }
+    }
+
+    // Filter Chips
+    function toggleFilterChip(btn) {
+      const filterType = btn.getAttribute('data-filter');
+      const val = btn.getAttribute('data-val');
+
+      const parent = btn.parentElement;
+      parent.querySelectorAll('.filter-chip').forEach(el => el.classList.remove('active'));
+      btn.classList.add('active');
+
+      activeFilters[filterType] = val;
+      renderInternships();
+    }
+
+    function setQuickSearch(kw) {
+      document.getElementById('keywordInput').value = kw;
+      executeSearch();
+    }
+
+    function executeSearch() {
+      activeFilters.keyword = document.getElementById('keywordInput').value.trim();
+      renderInternships();
+    }
+
+    function resetFilters() {
+      activeFilters.keyword = '';
+      activeFilters.region = 'all';
+      activeFilters.type = 'all';
+      activeFilters.companyType = 'all';
+      activeFilters.status = 'all';
+
+      document.getElementById('keywordInput').value = '';
+      document.querySelectorAll('.filter-options').forEach(group => {
+        group.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        const allBtn = group.querySelector('[data-val="all"]');
+        if (allBtn) allBtn.classList.add('active');
+      });
+
+      renderInternships();
+      showToast('모든 검색 조건이 초기화되었습니다.', 'info');
+    }
+
+    function setViewMode(mode) {
+      viewMode = mode;
+      document.getElementById('btnViewCard').classList.toggle('active', mode === 'card');
+      document.getElementById('btnViewTable').classList.toggle('active', mode === 'table');
+
+      document.getElementById('cardGridContainer').style.display = mode === 'card' ? 'grid' : 'none';
+      document.getElementById('tableContainer').style.display = mode === 'table' ? 'block' : 'none';
+    }
+
+    function switchMainTab(tabName) {
+      document.querySelectorAll('.main-header .nav-btn').forEach(btn => btn.classList.remove('active'));
+      
+      const tabSearch = document.getElementById('tabSearchView');
+      const tabNotice = document.getElementById('tabNoticeView');
+      const tabQna = document.getElementById('tabQnaView');
+      const hero = document.getElementById('heroSection');
+
+      tabSearch.style.display = 'none';
+      tabNotice.style.display = 'none';
+      tabQna.style.display = 'none';
+
+      if (tabName === 'search') {
+        tabSearch.style.display = 'block';
+        hero.style.display = 'block';
+        document.querySelectorAll('.main-header .nav-btn')[0].classList.add('active');
+      } else if (tabName === 'notice') {
+        tabNotice.style.display = 'block';
+        hero.style.display = 'none';
+        document.querySelectorAll('.main-header .nav-btn')[1].classList.add('active');
+      } else if (tabName === 'qna') {
+        tabQna.style.display = 'block';
+        hero.style.display = 'none';
+        document.querySelectorAll('.main-header .nav-btn')[2].classList.add('active');
+      }
+    }
+
+    // Main Internship Renderer
+    function renderInternships() {
+      const all = window.KDISSW_SYNC ? window.KDISSW_SYNC.getInternships() : (window.INITIAL_INTERNSHIPS || []);
+      
+      // Filter logic
+      let filtered = all.filter(item => {
+        // Keyword
+        if (activeFilters.keyword) {
+          const kw = activeFilters.keyword.toLowerCase();
+          const targetStr = [
+            item['기업명'],
+            item['직무 ※ 자세하게 기술'],
+            item['업종'],
+            item['발굴 권역(광역)'],
+            item['인턴처 발굴 기관명'],
+            item['자격 요건(우대사항)'],
+            item['주소(실제 근무장소 포함)']
+          ].join(' ').toLowerCase();
+
+          if (!targetStr.includes(kw)) return false;
+        }
+
+        // Region
+        if (activeFilters.region !== 'all') {
+          const reg = item['발굴 권역(광역)'] || '';
+          if (!reg.includes(activeFilters.region)) return false;
+        }
+
+        // Type
+        if (activeFilters.type !== 'all') {
+          const t = item['인턴(사업단) 구분'] || '';
+          if (!t.includes(activeFilters.type)) return false;
+        }
+
+        // Company Type
+        if (activeFilters.companyType !== 'all') {
+          const ct = item['기업 구분'] || '';
+          if (activeFilters.companyType === '공기업') {
+            if (!ct.includes('공기업') && !ct.includes('공공') && !ct.includes('기타')) return false;
+          } else {
+            if (!ct.includes(activeFilters.companyType)) return false;
+          }
+        }
+
+        // Status
+        if (activeFilters.status !== 'all') {
+          const s = item['최종'] || '모집중';
+          if (activeFilters.status === '모집중' && s.includes('마감')) return false;
+          if (activeFilters.status === '마감' && !s.includes('마감')) return false;
+        }
+
+        return true;
+      });
+
+      // Sort logic
+      const sortKey = document.getElementById('sortSelect').value;
+      filtered.sort((a, b) => {
+        if (sortKey === 'id_asc') {
+          return (parseInt(a['구분']) || 0) - (parseInt(b['구분']) || 0);
+        } else if (sortKey === 'id_desc') {
+          return (parseInt(b['구분']) || 0) - (parseInt(a['구분']) || 0);
+        } else if (sortKey === 'capacity_desc') {
+          const capA = parseInt((a['인턴 모집 규모']||'').match(/\d+/)?.[0] || '1', 10);
+          const capB = parseInt((b['인턴 모집 규모']||'').match(/\d+/)?.[0] || '1', 10);
+          return capB - capA;
+        } else if (sortKey === 'region') {
+          return (a['발굴 권역(광역)'] || '').localeCompare(b['발굴 권역(광역)'] || '');
+        } else if (sortKey === 'company') {
+          return (a['기업명'] || '').localeCompare(b['기업명'] || '');
+        }
+        return 0;
+      });
+
+      currentFilteredData = filtered;
+      document.getElementById('totalCountDisplay').innerText = filtered.length;
+
+      const emptyEl = document.getElementById('emptyState');
+      const cardGrid = document.getElementById('cardGridContainer');
+      const tableBody = document.getElementById('tableBody');
+
+      if (filtered.length === 0) {
+        emptyEl.style.display = 'block';
+        cardGrid.innerHTML = '';
+        tableBody.innerHTML = '';
+        return;
+      }
+      emptyEl.style.display = 'none';
+
+      // Render Cards
+      cardGrid.innerHTML = filtered.map(item => renderCardHtml(item)).join('');
+
+      // Render Table
+      tableBody.innerHTML = filtered.map(item => renderTableRowHtml(item)).join('');
+    }
+
+    function renderCardHtml(item) {
+      const isClosed = (item['최종'] || '').includes('마감');
+      const statusBadge = isClosed 
+        ? `<span class="badge badge-status-closed">마감</span>`
+        : `<span class="badge badge-status-open">모집중</span>`;
+
+      const typeStr = item['인턴(사업단) 구분'] || '직접전환형';
+      const isTrial = typeStr.includes('체험형');
+      const typeBadge = isTrial
+        ? `<span class="badge badge-type-trial">${typeStr}</span>`
+        : `<span class="badge badge-type-direct">${typeStr}</span>`;
+
+      // Matching calculations
+      const capacityMatch = (item['인턴 모집 규모'] || '').match(/\d+/);
+      const capacity = capacityMatch ? parseInt(capacityMatch[0], 10) : 1;
+      
+      const matchedMatch = (item['매칭 인원'] || '').match(/\d+/);
+      const matched = matchedMatch ? parseInt(matchedMatch[0], 10) : 0;
+      const progressPercent = Math.min(100, Math.round((matched / capacity) * 100));
+
+      const address = (item['주소(실제 근무장소 포함)'] || '').replace(/\r?\n/g, ' ').trim();
+      const encodedAddress = encodeURIComponent(address.split(' ')[0] + ' ' + (address.split(' ')[1] || ''));
+
+      return `
+        <article class="intern-card">
+          <div class="card-top-meta">
+            <div class="badge-group">
+              ${statusBadge}
+              <span class="badge badge-region">${item['발굴 권역(광역)'] || '전국'}</span>
+              ${typeBadge}
+            </div>
+            <span class="card-id-tag">No.${item['구분']}</span>
+          </div>
+
+          <h3 class="card-title">${escapeHtml(item['기업명'] || '미정')}</h3>
+          <div class="card-company-type">
+            ${item['기업 구분'] || '기업'} · ${escapeHtml(item['업종'] || '일반')}
+          </div>
+
+          <div class="card-duty-box" title="${escapeHtml(item['직무 ※ 자세하게 기술'] || '상세 직무 내용')}">
+            <strong>직무:</strong> ${escapeHtml(item['직무 ※ 자세하게 기술'] || '직무 세부내용은 상세보기를 확인하세요.')}
+          </div>
+
+          <ul class="card-info-list">
+            <li class="card-info-item">
+              <span class="info-icon">📍</span>
+              <div class="info-text">
+                <div>${escapeHtml(address || '근무지 정보 확인 필요')}</div>
+                ${address ? `
+                  <a href="https://map.naver.com/v5/search/${encodeURIComponent(address)}" target="_blank" rel="noopener" class="naver-map-btn" title="네이버 지도에서 위치 확인">
+                    <span>N</span> 네이버 지도 보기
+                  </a>
+                ` : ''}
+              </div>
+            </li>
+            <li class="card-info-item">
+              <span class="info-icon">⏰</span>
+              <div class="info-text">
+                출퇴근: ${item['출퇴근 시간'] || '협의'} / 주 ${item['주당 근무시간'] || '40시간'}
+              </div>
+            </li>
+            <li class="card-info-item">
+              <span class="info-icon">🏢</span>
+              <div class="info-text">
+                발굴: ${item['인턴처 발굴 기관명'] || '광역자활센터'} (${item['발굴 담당자명'] || '담당자'})
+              </div>
+            </li>
+          </ul>
+
+          <div class="matching-bar-wrap">
+            <div class="matching-bar-meta">
+              <span>모집규모: <strong>${item['인턴 모집 규모'] || '1명'}</strong></span>
+              <span class="matched">매칭 현황: <strong>${matched}/${capacity}명</strong> (${progressPercent}%)</span>
+            </div>
+            <div class="matching-progress">
+              <div class="matching-progress-fill" style="width: ${progressPercent}%;"></div>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <button type="button" class="btn-action btn-detail" onclick="openDetailModal('${item['구분']}')">
+              상세보기
+            </button>
+            <button type="button" class="btn-action btn-pdf" onclick="exportSinglePdf('${item['구분']}')" title="이 인턴처 PDF 다운로드">
+              PDF
+            </button>
+            <button type="button" class="btn-action btn-match" onclick="openMatchingModal('${item['구분']}')" ${isClosed ? 'disabled' : ''}>
+              ${isClosed ? '매칭마감' : '매칭신청'}
+            </button>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderTableRowHtml(item) {
+      const isClosed = (item['최종'] || '').includes('마감');
+      const address = (item['주소(실제 근무장소 포함)'] || '').replace(/\r?\n/g, ' ').trim();
+
+      const capacityMatch = (item['인턴 모집 규모'] || '').match(/\d+/);
+      const capacity = capacityMatch ? parseInt(capacityMatch[0], 10) : 1;
+      const matchedMatch = (item['매칭 인원'] || '').match(/\d+/);
+      const matched = matchedMatch ? parseInt(matchedMatch[0], 10) : 0;
+
+      return `
+        <tr>
+          <td>${item['구분']}</td>
+          <td>
+            <span class="badge ${isClosed ? 'badge-status-closed' : 'badge-status-open'}">
+              ${isClosed ? '마감' : '모집중'}
+            </span>
+          </td>
+          <td><span class="badge badge-type-direct" style="font-size:0.7rem;">${item['인턴(사업단) 구분'] || '직접전환형'}</span></td>
+          <td><strong>${item['발굴 권역(광역)'] || ''}</strong></td>
+          <td><strong>${escapeHtml(item['기업명'] || '')}</strong></td>
+          <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${escapeHtml(item['직무 ※ 자세하게 기술']||'')}">
+            ${escapeHtml(item['업종'] || '')} - ${escapeHtml(item['직무 ※ 자세하게 기술'] || '')}
+          </td>
+          <td style="max-width:220px; font-size:0.8125rem;">
+            ${escapeHtml(address)}
+            ${address ? `<br><a href="https://map.naver.com/v5/search/${encodeURIComponent(address)}" target="_blank" class="naver-map-btn">지도</a>` : ''}
+          </td>
+          <td><strong>${item['인턴 모집 규모'] || '1명'}</strong></td>
+          <td><strong style="color:var(--primary-mint-dark);">${matched}/${capacity}명</strong></td>
+          <td>
+            <button class="nav-btn" style="padding:4px 8px; font-size:0.75rem;" onclick="openDetailModal('${item['구분']}')">상세</button>
+            <button class="nav-btn nav-btn-admin" style="padding:4px 8px; font-size:0.75rem; background:var(--primary-mint);" onclick="openMatchingModal('${item['구분']}')" ${isClosed ? 'disabled' : ''}>매칭</button>
+          </td>
+        </tr>
+      `;
+    }
+
+    // Detail Modal
+    function openDetailModal(id) {
+      const all = window.KDISSW_SYNC ? window.KDISSW_SYNC.getInternships() : window.INITIAL_INTERNSHIPS;
+      const item = all.find(it => String(it['구분']) === String(id));
+      if (!item) return;
+
+      currentDetailItem = item;
+
+      document.getElementById('modalTitle').innerText = item['기업명'] || '인턴처 상세 정보';
+      document.getElementById('modalRegionBadge').innerText = item['발굴 권역(광역)'] || '전국';
+      
+      const isClosed = (item['최종'] || '').includes('마감');
+      const statusEl = document.getElementById('modalStatusBadge');
+      statusEl.className = 'badge ' + (isClosed ? 'badge-status-closed' : 'badge-status-open');
+      statusEl.innerText = isClosed ? '마감' : '모집중';
+
+      const matchBtn = document.getElementById('modalMatchBtn');
+      if (isClosed) {
+        matchBtn.disabled = true;
+        matchBtn.innerText = '모집 마감됨';
+      } else {
+        matchBtn.disabled = false;
+        matchBtn.innerText = '🤝 참여자 매칭 신청';
+      }
+
+      const address = (item['주소(실제 근무장소 포함)'] || '').replace(/\r?\n/g, '<br>');
+      const rawAddress = (item['주소(실제 근무장소 포함)'] || '').replace(/\r?\n/g, ' ');
+
+      const content = `
+        <div class="detail-grid">
+          
+          <div class="detail-group-title">🏢 기업 및 사업장 기본 정보</div>
+          <div class="detail-item">
+            <span class="detail-label">기업명</span>
+            <span class="detail-value"><strong>${item['기업명'] || '-'}</strong></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">기업 구분 / 업종</span>
+            <span class="detail-value">${item['기업 구분'] || '-'} / ${item['업종'] || '-'}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">기업 규모 / 대표자</span>
+            <span class="detail-value">${item['기업 규모'] || '-'} / ${item['대표자명'] || '-'}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">대표 전화번호</span>
+            <span class="detail-value">${item['대표번호'] || '-'}</span>
+          </div>
+          <div class="detail-item full-width">
+            <span class="detail-label">근무지 주소 (실제 근무장소)</span>
+            <div class="detail-value">
+              ${address || '-'}
+              ${rawAddress ? `
+                <div style="margin-top:8px;">
+                  <a href="https://map.naver.com/v5/search/${encodeURIComponent(rawAddress)}" target="_blank" rel="noopener" class="naver-map-btn">
+                    <span>N</span> 네이버 지도에서 바로 확인하기 ↗
+                  </a>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+
+          <div class="detail-group-title">📋 인턴십 모집 및 근무 조건</div>
+          <div class="detail-item">
+            <span class="detail-label">인턴(사업단) 구분</span>
+            <span class="detail-value"><strong style="color:var(--primary-blue);">${item['인턴(사업단) 구분'] || '-'}</strong></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">인턴 모집 규모</span>
+            <span class="detail-value"><strong style="color:var(--primary-orange);">${item['인턴 모집 규모'] || '-'}</strong></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">출퇴근 시간</span>
+            <span class="detail-value">${item['출퇴근 시간'] || '-'}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">주당 근무시간 / 근무기간</span>
+            <span class="detail-value">${item['주당 근무시간'] || '-'} / ${item['근무기간'] || '-'}</span>
+          </div>
+          <div class="detail-item full-width">
+            <span class="detail-label">수행 직무 상세</span>
+            <span class="detail-value" style="line-height:1.6;">${item['직무 ※ 자세하게 기술'] || '협의'}</span>
+          </div>
+          <div class="detail-item full-width">
+            <span class="detail-label">자격 요건 및 우대사항</span>
+            <span class="detail-value">${item['자격 요건(우대사항)'] || '별도 자격요건 없음'}</span>
+          </div>
+
+          <div class="detail-group-title">📞 접수 방법 및 발굴기관 담당자</div>
+          <div class="detail-item">
+            <span class="detail-label">발굴 기관명</span>
+            <span class="detail-value">${item['인턴처 발굴 기관명'] || '-'}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">발굴 담당자 / 직함</span>
+            <span class="detail-value">${item['발굴 담당자명'] || '-'} ${item['발굴 담당자 직함'] || ''}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">발굴 담당자 연락처</span>
+            <span class="detail-value">${item['발굴 담당자 연락처'] || '-'}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">접수 방법</span>
+            <span class="detail-value">${item['접수 방법'] || '광역자활센터를 통해 매칭'}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">인사 담당자명 / 직위</span>
+            <span class="detail-value">${item['인사 담당자명'] || '-'} ${item['직위'] || ''}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">인사 담당 연락처</span>
+            <span class="detail-value">${item['연락처(기관)'] || '-'}</span>
+          </div>
+          <div class="detail-item full-width">
+            <span class="detail-label">접수 세부사항 / 모집기한</span>
+            <span class="detail-value">${item['접수 세부사항'] || '상시접수'} (모집기한: ${item['모집기한'] || '채용 시 마감'})</span>
+          </div>
+
+          <div class="detail-group-title">🤝 인턴처-참여자 매칭 결과 현황</div>
+          <div class="detail-item">
+            <span class="detail-label">현재 매칭 인원</span>
+            <span class="detail-value"><strong style="color:var(--primary-mint-dark);">${item['매칭 인원'] || '0명 (매칭 가능)'}</strong></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">매칭 참여 기관</span>
+            <span class="detail-value">${item['매칭 기관'] || '신청 대기'}</span>
+          </div>
+
+        </div>
+      `;
+
+      document.getElementById('modalDetailContent').innerHTML = content;
+      openModal('detailModal');
+    }
+
+    // PDF Export
+    function exportSinglePdf(id) {
+      openDetailModal(id);
+      setTimeout(() => {
+        window.print();
+      }, 300);
+    }
+
+    function exportCurrentDetailPdf() {
+      window.print();
+    }
+
+    // Matching Modals
+    function openMatchingModal(id) {
+      const all = window.KDISSW_SYNC ? window.KDISSW_SYNC.getInternships() : window.INITIAL_INTERNSHIPS;
+      const item = all.find(it => String(it['구분']) === String(id));
+      if (!item) return;
+
+      document.getElementById('matchTargetId').value = item['구분'];
+      document.getElementById('matchingTargetCompany').innerText = item['기업명'];
+      document.getElementById('matchingTargetMeta').innerText = `${item['발굴 권역(광역)']} / 모집규모: ${item['인턴 모집 규모'] || '1명'}`;
+      
+      document.getElementById('matchParticipantName').value = '';
+      document.getElementById('matchParticipantOrg').value = '';
+      document.getElementById('matchParticipantPhone').value = '';
+      document.getElementById('matchParticipantMemo').value = '';
+
+      openModal('matchingModal');
+    }
+
+    function openMatchingModalFromDetail() {
+      if (currentDetailItem) {
+        closeModal('detailModal');
+        openMatchingModal(currentDetailItem['구분']);
+      }
+    }
+
+    function handleMatchingSubmit(e) {
+      e.preventDefault();
+      const internshipId = document.getElementById('matchTargetId').value;
+      const participantName = document.getElementById('matchParticipantName').value.trim();
+      const participantOrg = document.getElementById('matchParticipantOrg').value.trim();
+      const phone = document.getElementById('matchParticipantPhone').value.trim();
+      const memo = document.getElementById('matchParticipantMemo').value.trim();
+
+      if (!participantName || !participantOrg) {
+        alert('참여자 성명과 소속 기관명을 입력해주세요.');
+        return;
+      }
+
+      try {
+        if (window.KDISSW_SYNC) {
+          window.KDISSW_SYNC.submitMatching({
+            internshipId,
+            participantName,
+            participantOrg,
+            phone,
+            memo
+          });
+        }
+
+        closeModal('matchingModal');
+        renderInternships();
+        showToast(`[매칭 접수 완료] ${participantName} 참여자(${participantOrg})의 매칭이 성공적으로 등록되었습니다.`, 'success');
+      } catch (err) {
+        alert('매칭 처리 중 오류 발생: ' + err.message);
+      }
+    }
+
+    // Notice Renderer
+    function renderNotices() {
+      const list = window.KDISSW_SYNC ? window.KDISSW_SYNC.getNotices() : (window.INITIAL_NOTICES || []);
+      const container = document.getElementById('noticeListContainer');
+      if (!container) return;
+
+      container.innerHTML = list.map(n => `
+        <div style="padding:18px; border-bottom:1px solid var(--gray-200); display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="openNoticeDetail(${n.id})">
+          <div>
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+              ${n.pinned ? '<span class="badge badge-type-direct" style="background:#e8f2fa; color:#004c85; font-size:0.75rem;">중요</span>' : ''}
+              <span class="badge badge-region">${n.category || '공지'}</span>
+              <strong style="font-size:1.0625rem; color:var(--gray-900);">${escapeHtml(n.title)}</strong>
+            </div>
+            <div style="font-size:0.8125rem; color:var(--gray-500); display:flex; gap:16px;">
+              <span>작성자: ${n.author}</span>
+              <span>등록일: ${n.date}</span>
+              <span>조회수: ${n.views || 0}</span>
+            </div>
+          </div>
+          <button type="button" class="btn-action btn-detail" style="flex:0 0 auto; padding:6px 14px; font-size:0.8125rem;">내용보기</button>
+        </div>
+      `).join('');
+    }
+
+    function openNoticeDetail(id) {
+      const list = window.KDISSW_SYNC ? window.KDISSW_SYNC.getNotices() : window.INITIAL_NOTICES;
+      const notice = list.find(n => n.id === id);
+      if (!notice) return;
+
+      notice.views = (notice.views || 0) + 1;
+      if (window.KDISSW_SYNC) window.KDISSW_SYNC.saveNotices(list);
+
+      document.getElementById('noticeModalTitle').innerText = notice.title;
+      document.getElementById('noticeModalCategory').innerText = notice.category || '공지';
+      document.getElementById('noticeModalAuthor').innerText = notice.author;
+      document.getElementById('noticeModalDate').innerText = notice.date;
+      document.getElementById('noticeModalViews').innerText = notice.views;
+      document.getElementById('noticeModalContent').innerText = notice.content;
+
+      openModal('noticeDetailModal');
+    }
+
+    // QNA Renderer
+    function renderQna() {
+      const list = window.KDISSW_SYNC ? window.KDISSW_SYNC.getQna() : (window.INITIAL_QNA || []);
+      const container = document.getElementById('qnaListContainer');
+      if (!container) return;
+
+      container.innerHTML = list.map(q => `
+        <div style="border:1px solid var(--gray-200); border-radius:12px; margin-bottom:14px; overflow:hidden;">
+          <div style="background:#fafbfc; padding:16px 20px; font-weight:700; color:var(--gray-900); display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="color:var(--primary-orange); font-size:1.125rem;">Q.</span>
+              <span>${escapeHtml(q.title)}</span>
+            </div>
+            <span class="badge badge-status-open" style="font-size:0.75rem;">${q.status || '답변완료'}</span>
+          </div>
+          <div style="padding:16px 20px; background:#fff; font-size:0.9375rem; color:var(--gray-700); line-height:1.6; border-top:1px solid var(--gray-200);">
+            <div style="margin-bottom:10px; color:var(--gray-600); font-size:0.875rem;">
+              <strong>질문 내용:</strong> ${escapeHtml(q.question)}
+            </div>
+            <div style="background:var(--primary-blue-light); padding:12px 16px; border-radius:8px; color:var(--primary-blue-dark);">
+              <strong>한국자활복지개발원 공식 답변:</strong><br>
+              ${escapeHtml(q.answer || '답변 검토 중입니다.')}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Modal Helpers
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Toast Notification
+    function showToast(msg, type = 'info') {
+      const toast = document.createElement('div');
+      toast.className = `toast ${type === 'success' ? 'toast-success' : ''}`;
+      toast.innerHTML = `<span>${type === 'success' ? '✅' : 'ℹ️'}</span> ${escapeHtml(msg)}`;
+      
+      const container = document.getElementById('toastContainer');
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
+</body>
+</html>
